@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ContractDecoder</title>
+<script async src="https://js.stripe.com/v3/buy-button.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#07101f;--navy2:#0d1b35;--indigo:#4f46e5;--indigo2:#6366f1;--border:rgba(255,255,255,0.08);--text:#e2e8f0;--muted:#64748b;--card:rgba(255,255,255,0.03)}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--text);min-height:100vh;font-size:15px}
+button{font-family:inherit;cursor:pointer}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(7,16,31,0.95);backdrop-filter:blur(10px);z-index:100}
+.nav-logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.1rem}
+.nav-logo-icon{width:32px;height:32px;background:linear-gradient(135deg,#4338ca,#6366f1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.nav-links{display:flex;align-items:center;gap:1.5rem}
+.nav-links a{color:var(--muted);font-size:0.875rem;cursor:pointer;transition:color 0.2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{background:var(--indigo);color:#fff;border:none;padding:0.5rem 1.1rem;border-radius:8px;font-size:0.875rem;font-weight:600;transition:background 0.2s}
+.nav-cta:hover{background:var(--indigo2)}
+.usage-pill{background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.3);border-radius:50px;padding:0.3rem 0.85rem;font-size:0.78rem;color:#a5b4fc}
+
+.section{display:none}.section.active{display:block}
+
+.hero{padding:5rem 2rem 4rem;text-align:center;max-width:760px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);border-radius:50px;padding:0.35rem 1rem;font-size:0.78rem;color:#a5b4fc;margin-bottom:1.75rem}
+.hero h1{font-size:3.2rem;font-weight:800;line-height:1.15;letter-spacing:-1.5px;margin-bottom:1.25rem}
+.hero h1 span{background:linear-gradient(135deg,#6366f1,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:#94a3b8;font-size:1.1rem;line-height:1.7;max-width:540px;margin:0 auto 2rem}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;border:none;padding:0.85rem 2rem;border-radius:10px;font-size:1rem;font-weight:600;transition:all 0.2s}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 25px rgba(99,102,241,0.35)}
+.btn-ghost{background:none;border:1px solid var(--border);color:var(--text);padding:0.85rem 2rem;border-radius:10px;font-size:1rem;transition:all 0.2s}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.04)}
+.legal-notice{display:inline-flex;align-items:center;gap:7px;margin-top:1.5rem;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:50px;padding:0.35rem 1rem;font-size:0.78rem;color:#fbbf24}
+
+.features{padding:4rem 2rem;max-width:900px;margin:0 auto}
+.features h2{text-align:center;font-size:1.8rem;font-weight:700;margin-bottom:0.5rem}
+.features-sub{text-align:center;color:var(--muted);margin-bottom:2.5rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+.feature-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.25rem}
+.feat-icon{font-size:1.5rem;margin-bottom:0.75rem}
+.feat-title{font-weight:600;font-size:0.95rem;margin-bottom:0.4rem}
+.feat-desc{color:var(--muted);font-size:0.83rem;line-height:1.6}
+
+.pricing{padding:4rem 2rem;max-width:800px;margin:0 auto}
+.pricing h2{text-align:center;font-size:1.8rem;font-weight:700;margin-bottom:0.5rem}
+.pricing-sub{text-align:center;color:var(--muted);margin-bottom:2.5rem}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+.plan{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;position:relative}
+.plan.featured{border-color:rgba(99,102,241,0.5);background:rgba(99,102,241,0.05)}
+.plan-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--indigo);color:#fff;font-size:0.7rem;font-weight:700;padding:3px 14px;border-radius:50px;white-space:nowrap}
+.plan-name{font-size:0.85rem;color:var(--muted);font-weight:500;margin-bottom:0.5rem}
+.plan-price{font-size:2.2rem;font-weight:800;margin-bottom:0.25rem}
+.plan-price span{font-size:0.9rem;font-weight:400;color:var(--muted)}
+.plan-desc{color:var(--muted);font-size:0.82rem;margin-bottom:1.25rem}
+.plan-features{list-style:none;margin-bottom:1.5rem}
+.plan-features li{font-size:0.85rem;padding:5px 0;display:flex;align-items:flex-start;gap:8px;color:#cbd5e1}
+.plan-features li::before{content:'✓';color:#22c55e;font-weight:700;flex-shrink:0;margin-top:1px}
+.plan-features li.locked::before{content:'🔒';font-size:0.75rem}
+.plan-btn{width:100%;padding:0.65rem;border-radius:9px;font-size:0.875rem;font-weight:600;border:1px solid var(--border);background:none;color:var(--text);transition:all 0.2s}
+.plan-btn:hover{background:rgba(255,255,255,0.06)}
+.plan.featured .plan-btn{background:var(--indigo);border-color:var(--indigo);color:#fff}
+.plan.featured .plan-btn:hover{background:var(--indigo2)}
+
+.analyzer{max-width:800px;margin:0 auto;padding:2rem 1.5rem}
+.analyzer h2{font-size:1.5rem;font-weight:700;margin-bottom:0.4rem}
+.analyzer-sub{color:var(--muted);font-size:0.9rem;margin-bottom:1.75rem}
+.upload-zone{border:2px dashed rgba(99,102,241,0.35);border-radius:16px;padding:2.25rem;text-align:center;background:rgba(99,102,241,0.03);cursor:pointer;transition:all 0.2s;position:relative}
+.upload-zone:hover,.upload-zone.drag{border-color:#6366f1;background:rgba(99,102,241,0.07)}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:2.25rem;margin-bottom:0.6rem}
+.upload-zone h3{font-size:1rem;font-weight:600;margin-bottom:0.35rem}
+.upload-zone p{color:var(--muted);font-size:0.85rem}
+.divider{display:flex;align-items:center;gap:1rem;margin:1.1rem 0;color:#475569;font-size:0.82rem}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+textarea{width:100%;height:170px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;padding:1rem;color:var(--text);font-size:0.875rem;font-family:inherit;resize:vertical;outline:none;transition:border 0.2s}
+textarea:focus{border-color:var(--indigo2)}
+textarea::placeholder{color:#475569}
+.file-chip{display:none;align-items:center;gap:10px;background:rgba(99,102,241,0.09);border:1px solid rgba(99,102,241,0.25);border-radius:10px;padding:0.7rem 1rem;margin-bottom:0.9rem}
+.file-chip.show{display:flex}
+.chip-info{flex:1;min-width:0}
+.chip-name{font-size:0.875rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip-size{font-size:0.75rem;color:var(--muted)}
+.chip-remove{background:none;border:none;color:var(--muted);font-size:1.1rem;padding:3px 6px;border-radius:5px}
+.chip-remove:hover{color:#ef4444;background:rgba(239,68,68,0.1)}
+
+.tier-notice{background:rgba(99,102,241,0.07);border:1px solid rgba(99,102,241,0.2);border-radius:12px;padding:1rem 1.25rem;margin-top:1.1rem;display:flex;gap:12px;align-items:flex-start}
+.tier-notice span{font-size:1.2rem;flex-shrink:0}
+.tier-notice div{font-size:0.83rem;line-height:1.7;color:#94a3b8}
+
+.analyze-btn{width:100%;padding:0.875rem;background:linear-gradient(135deg,#4338ca,#6366f1);border:none;border-radius:12px;color:#fff;font-size:1rem;font-weight:700;margin-top:1.1rem;transition:all 0.2s}
+.analyze-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 24px rgba(99,102,241,0.3)}
+.analyze-btn:disabled{opacity:0.45;cursor:not-allowed;transform:none}
+.error-box{display:none;background:rgba(239,68,68,0.09);border:1px solid rgba(239,68,68,0.22);border-radius:10px;padding:0.85rem 1.1rem;color:#fca5a5;font-size:0.875rem;margin-top:0.9rem}
+.error-box.show{display:block}
+.legal-bar{display:flex;align-items:flex-start;gap:8px;background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.18);border-radius:10px;padding:0.75rem 1rem;margin-top:1rem;font-size:0.8rem;color:#fbbf24;line-height:1.5}
+
+.loading{display:none;text-align:center;padding:4rem 1rem}
+.loading.show{display:block}
+.spinner{width:52px;height:52px;border:3px solid rgba(99,102,241,0.15);border-top-color:#6366f1;border-radius:50%;animation:spin 0.85s linear infinite;margin:0 auto 1.25rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-label{color:var(--muted);font-size:0.9rem;margin-bottom:1rem}
+.steps{display:inline-block;text-align:left}
+.lstep{font-size:0.83rem;padding:4px 0;color:#334155;transition:color 0.3s}
+.lstep.on{color:#818cf8}.lstep.done{color:#4ade80}
+
+.results{display:none}.results.show{display:block}
+.results-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:10px}
+.results-title{font-size:1.3rem;font-weight:700}
+.toolbar-right{display:flex;gap:8px}
+.tool-btn{background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text);padding:0.5rem 1rem;border-radius:9px;font-size:0.82rem;font-weight:500;display:flex;align-items:center;gap:6px;transition:all 0.2s}
+.tool-btn:hover{background:rgba(255,255,255,0.08)}
+.tool-btn.locked-btn{opacity:0.4;cursor:not-allowed}
+.tool-btn.dl-unlocked{background:rgba(99,102,241,0.12);border-color:rgba(99,102,241,0.3);color:#a5b4fc}
+.tool-btn.dl-unlocked:hover{background:rgba(99,102,241,0.2)}
+
+.risk-banner{border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:1.25rem}
+.risk-LOW{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2)}
+.risk-MEDIUM{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2)}
+.risk-HIGH{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2)}
+.risk-score{font-size:2rem;font-weight:800;min-width:40px}
+.score-LOW{color:#4ade80}.score-MEDIUM{color:#fbbf24}.score-HIGH{color:#f87171}
+.risk-text h3{font-size:1rem;font-weight:600;margin-bottom:3px}
+.risk-text p{font-size:0.85rem;color:#94a3b8;line-height:1.5}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:0.9rem;overflow:hidden}
+.card-header{display:flex;align-items:center;gap:10px;padding:1rem 1.25rem;cursor:pointer;user-select:none}
+.card-header:hover{background:rgba(255,255,255,0.02)}
+.card-emoji{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.ce-blue{background:rgba(99,102,241,0.15)}.ce-red{background:rgba(239,68,68,0.12)}
+.ce-yellow{background:rgba(251,191,36,0.1)}.ce-green{background:rgba(34,197,94,0.1)}.ce-teal{background:rgba(6,182,212,0.1)}
+.card-label{font-size:0.95rem;font-weight:600;flex:1}
+.card-count{font-size:0.75rem;background:rgba(255,255,255,0.07);border-radius:50px;padding:2px 10px;color:#94a3b8}
+.chevron{color:var(--muted);font-size:0.85rem;transition:transform 0.2s}
+.card-body{padding:0 1.25rem 1.1rem;display:none}
+.card-body.open{display:block}
+
+.clause{padding:0.85rem 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.clause:last-child{border-bottom:none}
+.clause-title{font-size:0.9rem;font-weight:600;margin-bottom:0.35rem;display:flex;align-items:center;gap:7px}
+.dot-red{color:#f87171}.dot-yellow{color:#fbbf24}.dot-green{color:#4ade80}.dot-teal{color:#22d3ee}
+.clause-desc{font-size:0.84rem;color:#94a3b8;line-height:1.65}
+.tip-pill{background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.15);border-radius:8px;padding:0.55rem 0.85rem;margin-top:0.6rem}
+.tip-label{font-size:0.7rem;font-weight:700;letter-spacing:0.6px;color:#22c55e;margin-bottom:2px;text-transform:uppercase}
+.tip-text{font-size:0.82rem;color:#86efac;line-height:1.55}
+.teaser-tag{font-size:0.72rem;background:rgba(34,197,94,0.1);color:#4ade80;border:1px solid rgba(34,197,94,0.2);border-radius:50px;padding:2px 10px;float:right}
+.pro-tag{font-size:0.72rem;background:rgba(99,102,241,0.12);color:#a5b4fc;border:1px solid rgba(99,102,241,0.25);border-radius:50px;padding:2px 10px;float:right}
+
+.locked-wrap{position:relative;border-radius:10px;overflow:hidden;min-height:120px}
+.locked-blur{filter:blur(4px);pointer-events:none;user-select:none;opacity:0.5}
+.unlock-gate{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(to bottom,rgba(7,16,31,0.2),rgba(7,16,31,0.96));border-radius:10px;text-align:center;padding:1.25rem;z-index:10}
+.unlock-gate h3{font-size:1rem;font-weight:700;margin-bottom:0.35rem}
+.unlock-gate p{font-size:0.83rem;color:#94a3b8;margin-bottom:1rem;line-height:1.5}
+.unlock-sub{font-size:0.72rem;color:#475569;margin-top:0.5rem}
+.paid-unlock-btn{background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.3);color:#4ade80;border-radius:9px;padding:0.55rem 1.25rem;font-size:0.83rem;font-weight:600;margin-top:0.6rem;transition:all 0.2s;display:none}
+.paid-unlock-btn.show{display:inline-block}
+.paid-unlock-btn:hover{background:rgba(34,197,94,0.2)}
+
+.followup{margin-top:1.25rem;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.followup-header{padding:0.9rem 1.25rem;border-bottom:1px solid var(--border);font-size:0.9rem;font-weight:600;display:flex;align-items:center;gap:8px;color:#a5b4fc}
+.chat-log{max-height:240px;overflow-y:auto;padding:0.75rem 1.25rem;display:flex;flex-direction:column;gap:0.6rem}
+.chat-msg{font-size:0.84rem;line-height:1.6;padding:0.65rem 0.9rem;border-radius:10px;max-width:88%}
+.msg-user{background:rgba(99,102,241,0.15);color:#c7d2fe;align-self:flex-end;border-radius:10px 10px 3px 10px}
+.msg-ai{background:rgba(255,255,255,0.05);color:#cbd5e1;align-self:flex-start;border-radius:10px 10px 10px 3px}
+.chat-locked{padding:1rem 1.25rem;background:rgba(99,102,241,0.05);border-top:1px solid var(--border);text-align:center;font-size:0.83rem;color:#64748b}
+.chat-input-row{display:flex;gap:8px;padding:0.75rem 1.25rem;border-top:1px solid var(--border)}
+.chat-input-row input{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:9px;padding:0.6rem 0.9rem;color:var(--text);font-size:0.875rem;font-family:inherit;outline:none;transition:border 0.2s}
+.chat-input-row input:focus{border-color:rgba(99,102,241,0.5)}
+.chat-input-row input::placeholder{color:#475569}
+.chat-send{background:var(--indigo);color:#fff;border:none;border-radius:9px;padding:0.6rem 1rem;font-size:0.85rem;font-weight:600;transition:background 0.2s}
+.chat-send:hover:not(:disabled){background:var(--indigo2)}
+.chat-send:disabled{opacity:0.45}
+
+.disclaimer-block{background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.16);border-radius:12px;padding:1rem 1.25rem;margin-top:1.25rem;display:flex;gap:10px}
+.disclaimer-block p{font-size:0.82rem;color:#fbbf24;line-height:1.65}
+.reset-btn{background:none;border:1px solid var(--border);color:#94a3b8;padding:0.55rem 1.1rem;border-radius:9px;font-size:0.82rem;margin-top:1.25rem;transition:all 0.2s}
+.reset-btn:hover{border-color:rgba(255,255,255,0.18);color:var(--text)}
+
+.paywall-overlay{display:none;position:fixed;inset:0;background:rgba(7,16,31,0.92);z-index:200;align-items:center;justify-content:center;padding:1.5rem}
+.paywall-overlay.show{display:flex}
+.paywall-box{background:#0d1b35;border:1px solid rgba(99,102,241,0.35);border-radius:20px;padding:2.5rem;max-width:420px;width:100%;text-align:center}
+.paywall-box h2{font-size:1.5rem;font-weight:800;margin-bottom:0.5rem}
+.paywall-box p{color:#94a3b8;font-size:0.9rem;margin-bottom:1.75rem;line-height:1.6}
+.pw-dismiss{background:none;border:none;color:var(--muted);font-size:0.82rem;text-decoration:underline;margin-top:0.75rem}
+.pw-dismiss:hover{color:var(--text)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-icon">📄</div>
+    ContractDecoder
+  </div>
+  <div class="nav-links">
+    <a onclick="show('landing')">Home</a>
+    <a onclick="show('analyzer')">Analyzer</a>
+    <a onclick="show('pricing')">Pricing</a>
+    <span class="usage-pill" id="usage-pill">3 free previews left</span>
+  </div>
+  <button class="nav-cta" onclick="show('analyzer')">Analyze a Contract</button>
+</nav>
+
+<div class="paywall-overlay" id="paywall">
+  <div class="paywall-box">
+    <div style="font-size:2.5rem;margin-bottom:1rem">🔒</div>
+    <h2>You've used your 3 free previews</h2>
+    <p>You've reached the free limit. Each analysis costs one preview — pay $4.99 to unlock a full report, or come back tomorrow for 3 more free previews.</p>
+  <stripe-buy-button buy-button-id="buy_btn_1Tc31AH2YCObrAndm0yuOuRq" publishable-key="pk_live_51TbmoPH2YCObrAnd9Gaz09IvC3I5R3SoD7gN2Sm4Iom0DgzJwDdMvxindW34uv58o5nI61JgMLcV4e2bSMxkhzKX005m7qykY2"></stripe-buy-button>
+    <br/><button class="pw-dismiss" onclick="document.getElementById('paywall').classList.remove('show')">Maybe later</button>
+  </div>
+</div>
+
+<!-- LANDING -->
+<div class="section active" id="sec-landing">
+  <div class="hero">
+    <div class="hero-badge">🚀 AI-Powered Contract Analysis</div>
+    <h1>Stop signing contracts<br/>you don't <span>understand</span></h1>
+    <p>Upload any contract in seconds. Our AI decodes the legalese, flags predatory clauses, and gives you negotiation ammunition — before you sign.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="show('analyzer')">Analyze a Contract Free →</button>
+      <button class="btn-ghost" onclick="show('pricing')">See Pricing</button>
+    </div>
+    <div style="margin-top:1.5rem">
+      <div class="legal-notice">⚖️ <strong>Not legal advice.</strong> Always consult a qualified attorney for important matters.</div>
+    </div>
+  </div>
+
+  <div class="features">
+    <h2>Everything you need before you sign</h2>
+    <p class="features-sub">Powered by Claude AI — the most capable model for document analysis</p>
+    <div class="features-grid">
+      <div class="feature-card"><div class="feat-icon">📋</div><div class="feat-title">Plain English Summary</div><div class="feat-desc">Dense legalese translated into clear, simple language anyone can understand. Free on every analysis.</div></div>
+      <div class="feature-card"><div class="feat-icon">🚩</div><div class="feat-title">Red Flag Detection</div><div class="feat-desc">AI identifies unfair or harmful clauses. Your first red flag is free — unlock all of them for $4.99.</div></div>
+      <div class="feature-card"><div class="feat-icon">💬</div><div class="feat-title">Negotiation Tips</div><div class="feat-desc">Specific, actionable advice for pushing back on terms. Unlocked with the full report.</div></div>
+      <div class="feature-card"><div class="feat-icon">🤖</div><div class="feat-title">AI Follow-Up Chat</div><div class="feat-desc">Ask follow-up questions about your contract and get instant answers. Included with full report.</div></div>
+      <div class="feature-card"><div class="feat-icon">📥</div><div class="feat-title">Downloadable Report</div><div class="feat-desc">Export your full analysis as a PDF to share with colleagues or your attorney. Included with full report.</div></div>
+      <div class="feature-card"><div class="feat-icon">🔒</div><div class="feat-title">Private & Secure</div><div class="feat-desc">Your documents are never stored. Analysis runs in real-time and is never retained on our servers.</div></div>
+    </div>
+  </div>
+
+  <div class="pricing">
+    <h2>Simple, transparent pricing</h2>
+    <p class="pricing-sub">Try free. Pay only when you need the full picture.</p>
+    <div class="pricing-grid">
+      <div class="plan">
+        <div class="plan-name">Free Preview</div>
+        <div class="plan-price">$0</div>
+        <div class="plan-desc">3 free previews — no account needed</div>
+        <ul class="plan-features">
+          <li>Plain English summary</li>
+          <li>Risk score (Low / Medium / High)</li>
+          <li>1 red flag preview</li>
+          <li class="locked" style="color:#475569">Remaining red flags</li>
+          <li class="locked" style="color:#475569">Watch-out clauses</li>
+          <li class="locked" style="color:#475569">Negotiation tips</li>
+          <li class="locked" style="color:#475569">AI follow-up chat</li>
+          <li class="locked" style="color:#475569">PDF report download</li>
+        </ul>
+        <button class="plan-btn" onclick="show('analyzer')">Start Free</button>
+      </div>
+      <div class="plan featured">
+        <div class="plan-badge">MOST POPULAR</div>
+        <div class="plan-name">Full Report</div>
+        <div class="plan-price">$4.99<span> one-time</span></div>
+        <div class="plan-desc">Per document — pay once, unlock everything</div>
+        <ul class="plan-features">
+          <li>Everything in Free</li>
+          <li>All red flags revealed</li>
+          <li>Watch-out clauses</li>
+          <li>All negotiation tips</li>
+          <li>Fair terms analysis</li>
+          <li>AI follow-up chat</li>
+          <li>PDF report download</li>
+        </ul>
+        <button class="plan-btn" onclick="show('analyzer')">Analyze Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING PAGE -->
+<div class="section" id="sec-pricing">
+  <div class="pricing" style="padding-top:3rem">
+    <h2>Simple, transparent pricing</h2>
+    <p class="pricing-sub">Try free. Pay only when you need the full picture.</p>
+    <div class="pricing-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+      <div class="plan">
+        <div class="plan-name">Free Preview</div>
+        <div class="plan-price">$0</div>
+        <div class="plan-desc">3 free previews — no account needed</div>
+        <ul class="plan-features">
+          <li>Plain English summary</li>
+          <li>Risk score (Low / Medium / High)</li>
+          <li>1 red flag preview</li>
+          <li class="locked" style="color:#475569">Remaining red flags</li>
+          <li class="locked" style="color:#475569">Watch-out clauses</li>
+          <li class="locked" style="color:#475569">Negotiation tips</li>
+          <li class="locked" style="color:#475569">AI follow-up chat</li>
+          <li class="locked" style="color:#475569">PDF report download</li>
+        </ul>
+        <button class="plan-btn" onclick="show('analyzer')">Start Free</button>
+      </div>
+      <div class="plan featured">
+        <div class="plan-badge">MOST POPULAR</div>
+        <div class="plan-name">Full Report</div>
+        <div class="plan-price">$4.99<span> one-time</span></div>
+        <div class="plan-desc">Per document — pay once, unlock everything</div>
+        <ul class="plan-features">
+          <li>Everything in Free</li>
+          <li>All red flags revealed</li>
+          <li>Watch-out clauses</li>
+          <li>All negotiation tips</li>
+          <li>Fair terms analysis</li>
+          <li>AI follow-up chat</li>
+          <li>PDF report download</li>
+        </ul>
+        <button class="plan-btn" onclick="show('analyzer')">Analyze Now</button>
+      </div>
+      <div class="plan">
+        <div class="plan-name">Unlimited</div>
+        <div class="plan-price">$19.99<span>/mo</span></div>
+        <div class="plan-desc">Unlimited full reports — no per-doc fees</div>
+        <ul class="plan-features">
+          <li>Everything in Full Report</li>
+          <li>Unlimited documents</li>
+          <li>No per-report fees</li>
+          <li>AI follow-up chat on all docs</li>
+          <li>PDF downloads on all docs</li>
+          <li>Priority processing</li>
+        </ul>
+        <stripe-buy-button buy-button-id="buy_btn_1Tc32iH2YCObrAndhlRNHr1D" publishable-key="pk_live_51TbmoPH2YCObrAnd9Gaz09IvC3I5R3SoD7gN2Sm4Iom0DgzJwDdMvxindW34uv58o5nI61JgMLcV4e2bSMxkhzKX005m7qykY2"></stripe-buy-button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ANALYZER -->
+<div class="section" id="sec-analyzer">
+  <div class="analyzer">
+    <h2>Analyze Your Contract</h2>
+    <p class="analyzer-sub">Upload a file or paste text — your document is never stored.</p>
+
+    <div id="upload-section">
+      <div class="upload-zone" id="dropzone">
+        <input type="file" id="file-input" accept=".pdf,.txt,.doc,.docx"/>
+        <div class="upload-icon">📎</div>
+        <h3>Drop your contract here</h3>
+        <p>Supports PDF, TXT, DOC — or paste below</p>
+      </div>
+      <div class="divider">or paste text</div>
+      <div class="file-chip" id="file-chip">
+        <span style="font-size:1.4rem">📄</span>
+        <div class="chip-info">
+          <div class="chip-name" id="chip-name"></div>
+          <div class="chip-size" id="chip-size"></div>
+        </div>
+        <button class="chip-remove" id="chip-remove">✕</button>
+      </div>
+      <textarea id="contract-text" placeholder="Paste your lease, employment contract, NDA, terms of service, or any legal document here..."></textarea>
+
+      <div class="tier-notice">
+        <span>🔍</span>
+        <div>
+          <strong style="color:#a5b4fc">Free preview includes:</strong> plain English summary, risk score, and your first red flag.<br/>
+          <strong style="color:#f87171">Locked in free tier:</strong> remaining red flags, watch-out clauses, negotiation tips, fair terms analysis, AI follow-up chat, and PDF download.<br/>
+          <span style="color:#6ee7b7">Unlock everything for a one-time $4.99 — pay after you see your free preview.</span>
+        </div>
+      </div>
+
+      <button class="analyze-btn" id="analyze-btn" onclick="analyze()">🔍 Analyze Contract — Free Preview</button>
+      <div class="error-box" id="error-box"></div>
+      <div class="legal-bar">⚖️ <span><strong>Not legal advice.</strong> ContractDecoder is for informational purposes only. For contracts with significant implications, please consult a licensed attorney.</span></div>
+    </div>
+
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <div class="loading-label">Analyzing with AI...</div>
+      <div class="steps">
+        <div class="lstep" id="ls1">📖 Reading document structure...</div>
+        <div class="lstep" id="ls2">⚖️ Identifying legal clauses...</div>
+        <div class="lstep" id="ls3">🚩 Flagging predatory terms...</div>
+        <div class="lstep" id="ls4">💬 Generating negotiation tips...</div>
+        <div class="lstep" id="ls5">📊 Scoring overall risk...</div>
+      </div>
+    </div>
+
+    <div class="results" id="results">
+      <div class="results-toolbar">
+        <div class="results-title">📄 Analysis Complete</div>
+        <div class="toolbar-right">
+          <button class="tool-btn locked-btn" id="dl-btn" title="Unlock full report to download">🔒 Download Report</button>
+          <button class="tool-btn" onclick="resetAnalyzer()">← New Document</button>
+        </div>
+      </div>
+
+      <div class="risk-banner" id="risk-banner">
+        <div class="risk-score" id="risk-score"></div>
+        <div class="risk-text"><h3 id="risk-title"></h3><p id="risk-summary"></p></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggleCard('summary')">
+          <div class="card-emoji ce-blue">📋</div>
+          <span class="card-label">Plain English Summary</span>
+          <span class="teaser-tag">✓ Free</span>
+          <span class="chevron" id="chev-summary">▾</span>
+        </div>
+        <div class="card-body open" id="body-summary"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggleCard('red')">
+          <div class="card-emoji ce-red">🚩</div>
+          <span class="card-label">Red Flags — Predatory Terms</span>
+          <span class="card-count" id="cnt-red"></span>
+          <span class="chevron" id="chev-red">▾</span>
+        </div>
+        <div class="card-body open" id="body-red"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggleCard('watch')">
+          <div class="card-emoji ce-yellow">⚠️</div>
+          <span class="card-label">Watch Out For</span>
+          <span class="card-count" id="cnt-watch"></span>
+          <span class="chevron" id="chev-watch">▾</span>
+        </div>
+        <div class="card-body open" id="body-watch"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggleCard('tips')">
+          <div class="card-emoji ce-green">💬</div>
+          <span class="card-label">Negotiation Tips</span>
+          <span class="card-count" id="cnt-tips"></span>
+          <span class="chevron" id="chev-tips">▾</span>
+        </div>
+        <div class="card-body open" id="body-tips"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggleCard('fair')">
+          <div class="card-emoji ce-teal">✅</div>
+          <span class="card-label">Standard & Fair Terms</span>
+          <span class="card-count" id="cnt-fair"></span>
+          <span class="chevron" id="chev-fair">▾</span>
+        </div>
+        <div class="card-body open" id="body-fair"></div>
+      </div>
+
+      <div class="followup" id="followup-section">
+        <div class="followup-header">🤖 AI follow-up chat</div>
+        <div id="chat-locked-msg" class="chat-locked">🔒 Unlock the full report to ask follow-up questions about your contract.</div>
+        <div class="chat-log" id="chat-log" style="display:none"></div>
+        <div class="chat-input-row" id="chat-input-row" style="display:none">
+          <input type="text" id="chat-input" placeholder="e.g. Can I get out of this contract early?" onkeydown="if(event.key==='Enter')sendChat()"/>
+          <button class="chat-send" id="chat-send" onclick="sendChat()">Send</button>
+        </div>
+      </div>
+
+      <div class="disclaimer-block">
+        <span style="font-size:1.2rem;flex-shrink:0">⚖️</span>
+        <p><strong>Not Legal Advice.</strong> This analysis is generated by AI for informational and educational purposes only. It does not constitute legal advice. For any contract of significance, please consult a licensed attorney in your jurisdiction.</p>
+      </div>
+      <button class="reset-btn" onclick="resetAnalyzer()">← Analyze Another Document</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let fileData=null,fileName='',analysisResult=null,chatHistory=[],isUnlocked=false;
+let freeUses=3;
+const $=id=>document.getElementById(id);
+const STRIPE=`<stripe-buy-button buy-button-id="buy_btn_1Tc31AH2YCObrAndm0yuOuRq" publishable-key="pk_live_51TbmoPH2YCObrAnd9Gaz09IvC3I5R3SoD7gN2Sm4Iom0DgzJwDdMvxindW34uv58o5nI61JgMLcV4e2bSMxkhzKX005m7qykY2"></stripe-buy-button>`;
+
+function show(p){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));$('sec-'+p).classList.add('active');window.scrollTo(0,0)}
+function updateUsagePill(){$('usage-pill').textContent=freeUses>0?freeUses+' free preview'+(freeUses===1?' left':'s left'):'Free limit reached'}
+
+$('dropzone').addEventListener('dragover',e=>{e.preventDefault();$('dropzone').classList.add('drag')});
+$('dropzone').addEventListener('dragleave',()=>$('dropzone').classList.remove('drag'));
+$('dropzone').addEventListener('drop',e=>{e.preventDefault();$('dropzone').classList.remove('drag');if(e.dataTransfer.files[0])handleFile(e.dataTransfer.files[0])});
+$('file-input').addEventListener('change',e=>{if(e.target.files[0])handleFile(e.target.files[0])});
+$('chip-remove').addEventListener('click',()=>{fileData=null;fileName='';$('file-chip').classList.remove('show');$('file-input').value='';$('contract-text').placeholder='Paste your lease, employment contract, NDA, terms of service, or any legal document here...'});
+
+function handleFile(f){
+  fileName=f.name;
+  $('chip-name').textContent=f.name;
+  $('chip-size').textContent=(f.size/1024/1024).toFixed(2)+' MB';
+  $('file-chip').classList.add('show');
+  $('contract-text').value='';$('contract-text').placeholder='File selected above.';
+  const r=new FileReader();r.onload=ev=>{fileData=ev.target.result.split(',')[1]};r.readAsDataURL(f);
+}
+
+function toggleCard(id){const b=$('body-'+id),c=$('chev-'+id);b.classList.toggle('open');c.textContent=b.classList.contains('open')?'▾':'▸'}
+
+function renderItems(items,dotClass,showTip){
+  if(!items||!items.length)return'<p style="color:#475569;font-style:italic;font-size:0.85rem;padding:0.5rem 0">None identified.</p>';
+  return items.map(item=>`<div class="clause"><div class="clause-title"><span class="${dotClass}">●</span>${item.title}</div><div class="clause-desc">${item.description}</div>${showTip&&item.tip?`<div class="tip-pill"><div class="tip-label">💡 Negotiation Tip</div><div class="tip-text">${item.tip}</div></div>`:''}</div>`).join('');
+}
+
+function gateHTML(title,body,count){
+  return`<div class="locked-wrap"><div class="locked-blur">${body}</div><div class="unlock-gate"><h3>🔒 ${title}</h3><p>${count}</p>${STRIPE}<button class="paid-unlock-btn" onclick="unlockFullReport()">✓ I've paid — unlock now</button><div class="unlock-sub">One-time $4.99 · Instant access · No subscription</div></div></div>`;
+}
+
+function animateSteps(){
+  const ids=['ls1','ls2','ls3','ls4','ls5'];let i=0;
+  const iv=setInterval(()=>{if(i>0)$(ids[i-1]).className='lstep done';if(i<ids.length){$(ids[i]).className='lstep on';i++}else clearInterval(iv)},1600);
+  return iv;
+}
+
+async function analyze(){
+  const text=$('contract-text').value.trim();
+  if(!fileData&&!text){showErr('Please upload a file or paste contract text.');return}
+  if(freeUses<=0){$('paywall').classList.add('show');return}
+  $('error-box').classList.remove('show');
+  $('upload-section').style.display='none';
+  $('loading').classList.add('show');
+  const iv=animateSteps();
+  isUnlocked=false;
+
+  const sys=`You are a contract analysis expert. Analyze the provided contract and return ONLY raw JSON — no markdown, no backticks, no preamble.
+Return exactly:
+{"risk":"LOW"|"MEDIUM"|"HIGH","riskSummary":"One sentence.","summary":"2-4 sentence plain English summary.","redFlags":[{"title":"","description":"","tip":""}],"watchOut":[{"title":"","description":""}],"negotiationTips":[{"title":"","description":""}],"fairTerms":[{"title":"","description":""}]}
+Be specific and practical. Identify at minimum 2-4 items per section.`;
+
+  let msgs;
+  if(fileData){
+    const isPDF=fileName.toLowerCase().endsWith('.pdf');
+    msgs=[{role:'user',content:[{type:isPDF?'document':'image',source:{type:'base64',media_type:isPDF?'application/pdf':'image/png',data:fileData}},{type:'text',text:'Analyze this contract and return the JSON.'}]}];
+  } else {
+    msgs=[{role:'user',content:'Analyze this contract:\n\n'+text}];
+  }
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2500,system:sys,messages:msgs})});
+    const data=await res.json();
+    clearInterval(iv);$('loading').classList.remove('show');
+    if(!res.ok||data.error)throw new Error(data.error?.message||'API error');
+    const result=JSON.parse(data.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim());
+    analysisResult=result;
+    freeUses=Math.max(0,freeUses-1);
+    updateUsagePill();
+    chatHistory=[];
+
+    const banner=$('risk-banner');
+    banner.className='risk-banner risk-'+result.risk;
+    $('risk-score').textContent=result.risk==='HIGH'?'🔴':result.risk==='MEDIUM'?'🟡':'🟢';
+    $('risk-score').className='risk-score score-'+result.risk;
+    $('risk-title').textContent=result.risk==='HIGH'?'High Risk — Review carefully before signing':result.risk==='MEDIUM'?'Moderate Risk — Some terms need attention':'Low Risk — Mostly standard terms';
+    $('risk-summary').textContent=result.riskSummary||'';
+
+    $('body-summary').innerHTML=`<p style="font-size:0.9rem;color:#94a3b8;line-height:1.7;padding-bottom:0.5rem">${result.summary}</p>`;
+
+    const firstFlag=(result.redFlags||[]).slice(0,1);
+    const restFlags=(result.redFlags||[]).slice(1);
+    $('body-red').innerHTML=`<span class="teaser-tag">✓ Free preview</span>${renderItems(firstFlag,'dot-red',true)}${restFlags.length?gateHTML(restFlags.length+' more red flag'+(restFlags.length>1?'s':'')+' found',renderItems(restFlags,'dot-red',true),`Unlock to see every predatory clause with negotiation tips.`):''}`;
+
+    $('body-watch').innerHTML=gateHTML('Watch-out clauses locked',renderItems(result.watchOut,'dot-yellow',false),(result.watchOut||[]).length+' items need your attention.');
+    $('body-tips').innerHTML=gateHTML('Negotiation tips locked',renderItems(result.negotiationTips,'dot-green',false),(result.negotiationTips||[]).length+' actionable tips ready for you.');
+    $('body-fair').innerHTML=gateHTML('Fair terms analysis locked',renderItems(result.fairTerms,'dot-teal',false),'See which terms are standard and safe to keep.');
+
+    $('cnt-red').textContent=(result.redFlags||[]).length;
+    $('cnt-watch').textContent=(result.watchOut||[]).length;
+    $('cnt-tips').textContent=(result.negotiationTips||[]).length;
+    $('cnt-fair').textContent=(result.fairTerms||[]).length;
+
+    $('results').classList.add('show');
+
+    // Show "I've paid" buttons after a short delay (user has had time to interact with Stripe)
+    setTimeout(()=>{document.querySelectorAll('.paid-unlock-btn').forEach(b=>b.classList.add('show'))},8000);
+
+  }catch(e){
+    clearInterval(iv);$('loading').classList.remove('show');$('upload-section').style.display='block';showErr('Something went wrong: '+e.message);
+  }
+}
+
+function showErr(msg){const el=$('error-box');el.textContent='⚠️ '+msg;el.classList.add('show')}
+
+function unlockFullReport(){
+  if(!analysisResult)return;
+  const r=analysisResult;
+  isUnlocked=true;
+
+  $('body-red').innerHTML=`<span class="pro-tag">✓ Full access</span>${renderItems(r.redFlags,'dot-red',true)}`;
+  $('body-watch').innerHTML=`<span class="pro-tag">✓ Full access</span>${renderItems(r.watchOut,'dot-yellow',false)}`;
+  $('body-tips').innerHTML=`<span class="pro-tag">✓ Full access</span>${renderItems(r.negotiationTips,'dot-green',false)}`;
+  $('body-fair').innerHTML=`<span class="pro-tag">✓ Full access</span>${renderItems(r.fairTerms,'dot-teal',false)}`;
+
+  // Unlock chat
+  $('chat-locked-msg').style.display='none';
+  $('chat-log').style.display='flex';
+  $('chat-input-row').style.display='flex';
+  $('chat-log').innerHTML='<div class="chat-msg msg-ai">Full report unlocked! 🎉 Ask me anything about your contract — specific clauses, your rights, what to negotiate, anything.</div>';
+
+  // Unlock download
+  const dlBtn=$('dl-btn');
+  dlBtn.className='tool-btn dl-unlocked';
+  dlBtn.textContent='📥 Download Report';
+  dlBtn.onclick=downloadReport;
+  dlBtn.title='';
+}
+
+function resetAnalyzer(){
+  fileData=null;fileName='';analysisResult=null;chatHistory=[];isUnlocked=false;
+  $('results').classList.remove('show');
+  $('upload-section').style.display='block';
+  $('contract-text').value='';
+  $('contract-text').placeholder='Paste your lease, employment contract, NDA, terms of service, or any legal document here...';
+  $('file-chip').classList.remove('show');$('file-input').value='';$('error-box').classList.remove('show');
+  $('chat-locked-msg').style.display='block';$('chat-log').style.display='none';$('chat-input-row').style.display='none';
+  $('dl-btn').className='tool-btn locked-btn';$('dl-btn').textContent='🔒 Download Report';$('dl-btn').onclick=null;
+}
+
+async function sendChat(){
+  const inp=$('chat-input');const q=inp.value.trim();
+  if(!q||!analysisResult||!isUnlocked)return;
+  inp.value='';$('chat-send').disabled=true;
+  const log=$('chat-log');
+  log.innerHTML+=`<div class="chat-msg msg-user">${q}</div>`;
+  const thinking=document.createElement('div');thinking.className='chat-msg msg-ai';thinking.textContent='Thinking...';
+  log.appendChild(thinking);log.scrollTop=log.scrollHeight;
+  chatHistory.push({role:'user',content:q});
+  const sys=`You are a contract analysis assistant. The user's contract: Risk: ${analysisResult.risk}. Summary: ${analysisResult.summary}. Red Flags: ${JSON.stringify(analysisResult.redFlags)}. Tips: ${JSON.stringify(analysisResult.negotiationTips)}. Answer helpfully in 2-4 sentences. Remind the user you are not a lawyer when relevant.`;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:sys,messages:chatHistory})});
+    const data=await res.json();const reply=data.content.map(c=>c.text||'').join('');
+    thinking.textContent=reply;chatHistory.push({role:'assistant',content:reply});
+  }catch(e){thinking.textContent='Sorry, something went wrong. Please try again.'}
+  $('chat-send').disabled=false;log.scrollTop=log.scrollHeight;
+}
+
+function downloadReport(){
+  if(!analysisResult||!isUnlocked)return;
+  const r=analysisResult;const dt=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  function sec(title,items,showTip){if(!items||!items.length)return`<h3>${title}</h3><p style="color:#666;font-style:italic">None identified.</p>`;return`<h3>${title}</h3>${items.map(i=>`<div style="border-left:3px solid #4f46e5;padding:8px 14px;margin:10px 0;background:#f8f7ff;border-radius:0 6px 6px 0"><strong>${i.title}</strong><br/><span style="color:#444;font-size:14px">${i.description}</span>${showTip&&i.tip?`<div style="margin-top:8px;background:#e8f5e9;padding:7px 11px;border-radius:5px;font-size:13px;color:#2e7d32"><strong>💡 Tip:</strong> ${i.tip}</div>`:''}</div>`).join('')}`}
+  const rC=r.risk==='HIGH'?'#dc2626':r.risk==='MEDIUM'?'#d97706':'#16a34a';
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Contract Analysis Report</title><style>body{font-family:Georgia,serif;max-width:760px;margin:0 auto;padding:40px 30px;color:#1a1a1a;line-height:1.7}h1{font-size:26px;margin-bottom:4px}h2{font-size:20px;margin:28px 0 10px;border-bottom:2px solid #e5e7eb;padding-bottom:6px}h3{font-size:16px;margin:18px 0 8px;color:#3730a3}.chip{display:inline-block;padding:5px 16px;border-radius:50px;font-weight:700;font-size:13px;color:#fff;background:${rC};margin:8px 0}.meta{color:#6b7280;font-size:13px;margin-bottom:24px}.notice{background:#fffbeb;border:1px solid #fde68a;padding:12px 16px;border-radius:8px;font-size:13px;color:#92400e;margin-top:30px}</style></head><body><h1>📄 Contract Analysis Report</h1><div class="meta">Generated by ContractDecoder · ${dt}</div><div class="chip">${r.risk} RISK</div><p style="color:#555">${r.riskSummary}</p><h2>Plain English Summary</h2><p>${r.summary}</p>${sec('🚩 Red Flags',r.redFlags,true)}${sec('⚠️ Watch Out For',r.watchOut,false)}${sec('💬 Negotiation Tips',r.negotiationTips,false)}${sec('✅ Fair Terms',r.fairTerms,false)}<div class="notice">⚖️ <strong>Not Legal Advice.</strong> This report is AI-generated for informational purposes only. Consult a licensed attorney for contracts of significance.</div></body></html>`;
+  const blob=new Blob([html],{type:'text/html'});const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='ContractDecoder-Report.html';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+}
+
+updateUsagePill();
+</script>
+</body>
+</html>
