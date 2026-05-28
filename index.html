@@ -57,8 +57,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2
 .plan-desc{color:var(--muted);font-size:0.82rem;margin-bottom:1.25rem}
 .plan-features{list-style:none;margin-bottom:1.5rem}
 .plan-features li{font-size:0.85rem;padding:5px 0;display:flex;align-items:flex-start;gap:8px;color:#cbd5e1}
-.plan-features li::before{content:'✓';color:#22c55e;font-weight:700;flex-shrink:0;margin-top:1px}
-.plan-features li.locked::before{content:'🔒';font-size:0.75rem}
+.plan-features li::before{content:'â';color:#22c55e;font-weight:700;flex-shrink:0;margin-top:1px}
+.plan-features li.locked::before{content:'ð';font-size:0.75rem}
 .plan-btn{width:100%;padding:0.65rem;border-radius:9px;font-size:0.875rem;font-weight:600;border:1px solid var(--border);background:none;color:var(--text);transition:all 0.2s}
 .plan-btn:hover{background:rgba(255,255,255,0.06)}
 .plan.featured .plan-btn{background:var(--indigo);border-color:var(--indigo);color:#fff}
@@ -191,7 +191,7 @@ textarea::placeholder{color:#475569}
 
 <nav>
   <div class="nav-logo">
-    <div class="nav-logo-icon">📄</div>
+    <div class="nav-logo-icon">ð</div>
     ContractDecoder
   </div>
   <div class="nav-links">
@@ -205,9 +205,9 @@ textarea::placeholder{color:#475569}
 
 <div class="paywall-overlay" id="paywall">
   <div class="paywall-box">
-    <div style="font-size:2.5rem;margin-bottom:1rem">🔒</div>
+    <div style="font-size:2.5rem;margin-bottom:1rem">ð</div>
     <h2>You've used your 3 free previews</h2>
-    <p>You've reached the free limit. Each analysis costs one preview — pay $4.99 to unlock a full report, or come back tomorrow for 3 more free previews.</p>
+    <p>You've reached the free limit. Each analysis costs one preview â pay $4.99 to unlock a full report, or come back tomorrow for 3 more free previews.</p>
   <stripe-buy-button buy-button-id="buy_btn_1Tc31AH2YCObrAndm0yuOuRq" publishable-key="pk_live_51TbmoPH2YCObrAnd9Gaz09IvC3I5R3SoD7gN2Sm4Iom0DgzJwDdMvxindW34uv58o5nI61JgMLcV4e2bSMxkhzKX005m7qykY2"></stripe-buy-button>
     <br/><button class="pw-dismiss" onclick="document.getElementById('paywall').classList.remove('show')">Maybe later</button>
   </div>
@@ -216,28 +216,28 @@ textarea::placeholder{color:#475569}
 <!-- LANDING -->
 <div class="section active" id="sec-landing">
   <div class="hero">
-    <div class="hero-badge">🚀 AI-Powered Contract Analysis</div>
+    <div class="hero-badge">ð AI-Powered Contract Analysis</div>
     <h1>Stop signing contracts<br/>you don't <span>understand</span></h1>
-    <p>Upload any contract in seconds. Our AI decodes the legalese, flags predatory clauses, and gives you negotiation ammunition — before you sign.</p>
+    <p>Upload any contract in seconds. Our AI decodes the legalese, flags predatory clauses, and gives you negotiation ammunition â before you sign.</p>
     <div class="hero-btns">
-      <button class="btn-primary" onclick="show('analyzer')">Analyze a Contract Free →</button>
+      <button class="btn-primary" onclick="show('analyzer')">Analyze a Contract Free â</button>
       <button class="btn-ghost" onclick="show('pricing')">See Pricing</button>
     </div>
     <div style="margin-top:1.5rem">
-      <div class="legal-notice">⚖️ <strong>Not legal advice.</strong> Always consult a qualified attorney for important matters.</div>
+      <div class="legal-notice">âï¸ <strong>Not legal advice.</strong> Always consult a qualified attorney for important matters.</div>
     </div>
   </div>
 
   <div class="features">
     <h2>Everything you need before you sign</h2>
-    <p class="features-sub">Powered by Claude AI — the most capable model for document analysis</p>
+    <p class="features-sub">Powered by Claude AI â the most capable model for document analysis</p>
     <div class="features-grid">
-      <div class="feature-card"><div class="feat-icon">📋</div><div class="feat-title">Plain English Summary</div><div class="feat-desc">Dense legalese translated into clear, simple language anyone can understand. Free on every analysis.</div></div>
-      <div class="feature-card"><div class="feat-icon">🚩</div><div class="feat-title">Red Flag Detection</div><div class="feat-desc">AI identifies unfair or harmful clauses. Your first red flag is free — unlock all of them for $4.99.</div></div>
-      <div class="feature-card"><div class="feat-icon">💬</div><div class="feat-title">Negotiation Tips</div><div class="feat-desc">Specific, actionable advice for pushing back on terms. Unlocked with the full report.</div></div>
-      <div class="feature-card"><div class="feat-icon">🤖</div><div class="feat-title">AI Follow-Up Chat</div><div class="feat-desc">Ask follow-up questions about your contract and get instant answers. Included with full report.</div></div>
-      <div class="feature-card"><div class="feat-icon">📥</div><div class="feat-title">Downloadable Report</div><div class="feat-desc">Export your full analysis as a PDF to share with colleagues or your attorney. Included with full report.</div></div>
-      <div class="feature-card"><div class="feat-icon">🔒</div><div class="feat-title">Private & Secure</div><div class="feat-desc">Your documents are never stored. Analysis runs in real-time and is never retained on our servers.</div></div>
+      <div class="feature-card"><div class="feat-icon">ð</div><div class="feat-title">Plain English Summary</div><div class="feat-desc">Dense legalese translated into clear, simple language anyone can understand. Free on every analysis.</div></div>
+      <div class="feature-card"><div class="feat-icon">ð©</div><div class="feat-title">Red Flag Detection</div><div class="feat-desc">AI identifies unfair or harmful clauses. Your first red flag is free â unlock all of them for $4.99.</div></div>
+      <div class="feature-card"><div class="feat-icon">ð¬</div><div class="feat-title">Negotiation Tips</div><div class="feat-desc">Specific, actionable advice for pushing back on terms. Unlocked with the full report.</div></div>
+      <div class="feature-card"><div class="feat-icon">ð¤</div><div class="feat-title">AI Follow-Up Chat</div><div class="feat-desc">Ask follow-up questions about your contract and get instant answers. Included with full report.</div></div>
+      <div class="feature-card"><div class="feat-icon">ð¥</div><div class="feat-title">Downloadable Report</div><div class="feat-desc">Export your full analysis as a PDF to share with colleagues or your attorney. Included with full report.</div></div>
+      <div class="feature-card"><div class="feat-icon">ð</div><div class="feat-title">Private & Secure</div><div class="feat-desc">Your documents are never stored. Analysis runs in real-time and is never retained on our servers.</div></div>
     </div>
   </div>
 
@@ -248,7 +248,7 @@ textarea::placeholder{color:#475569}
       <div class="plan">
         <div class="plan-name">Free Preview</div>
         <div class="plan-price">$0</div>
-        <div class="plan-desc">3 free previews — no account needed</div>
+        <div class="plan-desc">3 free previews â no account needed</div>
         <ul class="plan-features">
           <li>Plain English summary</li>
           <li>Risk score (Low / Medium / High)</li>
@@ -265,7 +265,7 @@ textarea::placeholder{color:#475569}
         <div class="plan-badge">MOST POPULAR</div>
         <div class="plan-name">Full Report</div>
         <div class="plan-price">$4.99<span> one-time</span></div>
-        <div class="plan-desc">Per document — pay once, unlock everything</div>
+        <div class="plan-desc">Per document â pay once, unlock everything</div>
         <ul class="plan-features">
           <li>Everything in Free</li>
           <li>All red flags revealed</li>
@@ -290,7 +290,7 @@ textarea::placeholder{color:#475569}
       <div class="plan">
         <div class="plan-name">Free Preview</div>
         <div class="plan-price">$0</div>
-        <div class="plan-desc">3 free previews — no account needed</div>
+        <div class="plan-desc">3 free previews â no account needed</div>
         <ul class="plan-features">
           <li>Plain English summary</li>
           <li>Risk score (Low / Medium / High)</li>
@@ -307,7 +307,7 @@ textarea::placeholder{color:#475569}
         <div class="plan-badge">MOST POPULAR</div>
         <div class="plan-name">Full Report</div>
         <div class="plan-price">$4.99<span> one-time</span></div>
-        <div class="plan-desc">Per document — pay once, unlock everything</div>
+        <div class="plan-desc">Per document â pay once, unlock everything</div>
         <ul class="plan-features">
           <li>Everything in Free</li>
           <li>All red flags revealed</li>
@@ -322,7 +322,7 @@ textarea::placeholder{color:#475569}
       <div class="plan">
         <div class="plan-name">Unlimited</div>
         <div class="plan-price">$19.99<span>/mo</span></div>
-        <div class="plan-desc">Unlimited full reports — no per-doc fees</div>
+        <div class="plan-desc">Unlimited full reports â no per-doc fees</div>
         <ul class="plan-features">
           <li>Everything in Full Report</li>
           <li>Unlimited documents</li>
@@ -341,58 +341,58 @@ textarea::placeholder{color:#475569}
 <div class="section" id="sec-analyzer">
   <div class="analyzer">
     <h2>Analyze Your Contract</h2>
-    <p class="analyzer-sub">Upload a file or paste text — your document is never stored.</p>
+    <p class="analyzer-sub">Upload a file or paste text â your document is never stored.</p>
 
     <div id="upload-section">
       <div class="upload-zone" id="dropzone">
         <input type="file" id="file-input" accept=".pdf,.txt,.doc,.docx"/>
-        <div class="upload-icon">📎</div>
+        <div class="upload-icon">ð</div>
         <h3>Drop your contract here</h3>
-        <p>Supports PDF, TXT, DOC — or paste below</p>
+        <p>Supports PDF, TXT, DOC â or paste below</p>
       </div>
       <div class="divider">or paste text</div>
       <div class="file-chip" id="file-chip">
-        <span style="font-size:1.4rem">📄</span>
+        <span style="font-size:1.4rem">ð</span>
         <div class="chip-info">
           <div class="chip-name" id="chip-name"></div>
           <div class="chip-size" id="chip-size"></div>
         </div>
-        <button class="chip-remove" id="chip-remove">✕</button>
+        <button class="chip-remove" id="chip-remove">â</button>
       </div>
       <textarea id="contract-text" placeholder="Paste your lease, employment contract, NDA, terms of service, or any legal document here..."></textarea>
 
       <div class="tier-notice">
-        <span>🔍</span>
+        <span>ð</span>
         <div>
           <strong style="color:#a5b4fc">Free preview includes:</strong> plain English summary, risk score, and your first red flag.<br/>
           <strong style="color:#f87171">Locked in free tier:</strong> remaining red flags, watch-out clauses, negotiation tips, fair terms analysis, AI follow-up chat, and PDF download.<br/>
-          <span style="color:#6ee7b7">Unlock everything for a one-time $4.99 — pay after you see your free preview.</span>
+          <span style="color:#6ee7b7">Unlock everything for a one-time $4.99 â pay after you see your free preview.</span>
         </div>
       </div>
 
-      <button class="analyze-btn" id="analyze-btn" onclick="analyze()">🔍 Analyze Contract — Free Preview</button>
+      <button class="analyze-btn" id="analyze-btn" onclick="analyze()">ð Analyze Contract â Free Preview</button>
       <div class="error-box" id="error-box"></div>
-      <div class="legal-bar">⚖️ <span><strong>Not legal advice.</strong> ContractDecoder is for informational purposes only. For contracts with significant implications, please consult a licensed attorney.</span></div>
+      <div class="legal-bar">âï¸ <span><strong>Not legal advice.</strong> ContractDecoder is for informational purposes only. For contracts with significant implications, please consult a licensed attorney.</span></div>
     </div>
 
     <div class="loading" id="loading">
       <div class="spinner"></div>
       <div class="loading-label">Analyzing with AI...</div>
       <div class="steps">
-        <div class="lstep" id="ls1">📖 Reading document structure...</div>
-        <div class="lstep" id="ls2">⚖️ Identifying legal clauses...</div>
-        <div class="lstep" id="ls3">🚩 Flagging predatory terms...</div>
-        <div class="lstep" id="ls4">💬 Generating negotiation tips...</div>
-        <div class="lstep" id="ls5">📊 Scoring overall risk...</div>
+        <div class="lstep" id="ls1">ð Reading document structure...</div>
+        <div class="lstep" id="ls2">âï¸ Identifying legal clauses...</div>
+        <div class="lstep" id="ls3">ð© Flagging predatory terms...</div>
+        <div class="lstep" id="ls4">ð¬ Generating negotiation tips...</div>
+        <div class="lstep" id="ls5">ð Scoring overall risk...</div>
       </div>
     </div>
 
     <div class="results" id="results">
       <div class="results-toolbar">
-        <div class="results-title">📄 Analysis Complete</div>
+        <div class="results-title">ð Analysis Complete</div>
         <div class="toolbar-right">
-          <button class="tool-btn locked-btn" id="dl-btn" title="Unlock full report to download">🔒 Download Report</button>
-          <button class="tool-btn" onclick="resetAnalyzer()">← New Document</button>
+          <button class="tool-btn locked-btn" id="dl-btn" title="Unlock full report to download">ð Download Report</button>
+          <button class="tool-btn" onclick="resetAnalyzer()">â New Document</button>
         </div>
       </div>
 
@@ -403,57 +403,57 @@ textarea::placeholder{color:#475569}
 
       <div class="card">
         <div class="card-header" onclick="toggleCard('summary')">
-          <div class="card-emoji ce-blue">📋</div>
+          <div class="card-emoji ce-blue">ð</div>
           <span class="card-label">Plain English Summary</span>
-          <span class="teaser-tag">✓ Free</span>
-          <span class="chevron" id="chev-summary">▾</span>
+          <span class="teaser-tag">â Free</span>
+          <span class="chevron" id="chev-summary">â¾</span>
         </div>
         <div class="card-body open" id="body-summary"></div>
       </div>
 
       <div class="card">
         <div class="card-header" onclick="toggleCard('red')">
-          <div class="card-emoji ce-red">🚩</div>
-          <span class="card-label">Red Flags — Predatory Terms</span>
+          <div class="card-emoji ce-red">ð©</div>
+          <span class="card-label">Red Flags â Predatory Terms</span>
           <span class="card-count" id="cnt-red"></span>
-          <span class="chevron" id="chev-red">▾</span>
+          <span class="chevron" id="chev-red">â¾</span>
         </div>
         <div class="card-body open" id="body-red"></div>
       </div>
 
       <div class="card">
         <div class="card-header" onclick="toggleCard('watch')">
-          <div class="card-emoji ce-yellow">⚠️</div>
+          <div class="card-emoji ce-yellow">â ï¸</div>
           <span class="card-label">Watch Out For</span>
           <span class="card-count" id="cnt-watch"></span>
-          <span class="chevron" id="chev-watch">▾</span>
+          <span class="chevron" id="chev-watch">â¾</span>
         </div>
         <div class="card-body open" id="body-watch"></div>
       </div>
 
       <div class="card">
         <div class="card-header" onclick="toggleCard('tips')">
-          <div class="card-emoji ce-green">💬</div>
+          <div class="card-emoji ce-green">ð¬</div>
           <span class="card-label">Negotiation Tips</span>
           <span class="card-count" id="cnt-tips"></span>
-          <span class="chevron" id="chev-tips">▾</span>
+          <span class="chevron" id="chev-tips">â¾</span>
         </div>
         <div class="card-body open" id="body-tips"></div>
       </div>
 
       <div class="card">
         <div class="card-header" onclick="toggleCard('fair')">
-          <div class="card-emoji ce-teal">✅</div>
+          <div class="card-emoji ce-teal">â</div>
           <span class="card-label">Standard & Fair Terms</span>
           <span class="card-count" id="cnt-fair"></span>
-          <span class="chevron" id="chev-fair">▾</span>
+          <span class="chevron" id="chev-fair">â¾</span>
         </div>
         <div class="card-body open" id="body-fair"></div>
       </div>
 
       <div class="followup" id="followup-section">
-        <div class="followup-header">🤖 AI follow-up chat</div>
-        <div id="chat-locked-msg" class="chat-locked">🔒 Unlock the full report to ask follow-up questions about your contract.</div>
+        <div class="followup-header">ð¤ AI follow-up chat</div>
+        <div id="chat-locked-msg" class="chat-locked">ð Unlock the full report to ask follow-up questions about your contract.</div>
         <div class="chat-log" id="chat-log" style="display:none"></div>
         <div class="chat-input-row" id="chat-input-row" style="display:none">
           <input type="text" id="chat-input" placeholder="e.g. Can I get out of this contract early?" onkeydown="if(event.key==='Enter')sendChat()"/>
@@ -462,10 +462,10 @@ textarea::placeholder{color:#475569}
       </div>
 
       <div class="disclaimer-block">
-        <span style="font-size:1.2rem;flex-shrink:0">⚖️</span>
+        <span style="font-size:1.2rem;flex-shrink:0">âï¸</span>
         <p><strong>Not Legal Advice.</strong> This analysis is generated by AI for informational and educational purposes only. It does not constitute legal advice. For any contract of significance, please consult a licensed attorney in your jurisdiction.</p>
       </div>
-      <button class="reset-btn" onclick="resetAnalyzer()">← Analyze Another Document</button>
+      <button class="reset-btn" onclick="resetAnalyzer()">â Analyze Another Document</button>
     </div>
   </div>
 </div>
@@ -494,15 +494,15 @@ function handleFile(f){
   const r=new FileReader();r.onload=ev=>{fileData=ev.target.result.split(',')[1]};r.readAsDataURL(f);
 }
 
-function toggleCard(id){const b=$('body-'+id),c=$('chev-'+id);b.classList.toggle('open');c.textContent=b.classList.contains('open')?'▾':'▸'}
+function toggleCard(id){const b=$('body-'+id),c=$('chev-'+id);b.classList.toggle('open');c.textContent=b.classList.contains('open')?'â¾':'â¸'}
 
 function renderItems(items,dotClass,showTip){
   if(!items||!items.length)return'<p style="color:#475569;font-style:italic;font-size:0.85rem;padding:0.5rem 0">None identified.</p>';
-  return items.map(item=>`<div class="clause"><div class="clause-title"><span class="${dotClass}">●</span>${item.title}</div><div class="clause-desc">${item.description}</div>${showTip&&item.tip?`<div class="tip-pill"><div class="tip-label">💡 Negotiation Tip</div><div class="tip-text">${item.tip}</div></div>`:''}</div>`).join('');
+  return items.map(item=>`<div class="clause"><div class="clause-title"><span class="${dotClass}">â</span>${item.title}</div><div class="clause-desc">${item.description}</div>${showTip&&item.tip?`<div class="tip-pill"><div class="tip-label">ð¡ Negotiation Tip</div><div class="tip-text">${item.tip}</div></div>`:''}</div>`).join('');
 }
 
 function gateHTML(title,body,count){
-  return`<div class="locked-wrap"><div class="locked-blur">${body}</div><div class="unlock-gate"><h3>🔒 ${title}</h3><p>${count}</p>${STRIPE}<button class="paid-unlock-btn" onclick="unlockFullReport()">✓ I've paid — unlock now</button><div class="unlock-sub">One-time $4.99 · Instant access · No subscription</div></div></div>`;
+  return`<div class="locked-wrap"><div class="locked-blur">${body}</div><div class="unlock-gate"><h3>ð ${title}</h3><p>${count}</p>${STRIPE}<button class="paid-unlock-btn" onclick="unlockFullReport()">â I've paid â unlock now</button><div class="unlock-sub">One-time $4.99 Â· Instant access Â· No subscription</div></div></div>`;
 }
 
 function animateSteps(){
@@ -521,7 +521,7 @@ async function analyze(){
   const iv=animateSteps();
   isUnlocked=false;
 
-  const sys=`You are a contract analysis expert. Analyze the provided contract and return ONLY raw JSON — no markdown, no backticks, no preamble.
+  const sys=`You are a contract analysis expert. Analyze the provided contract and return ONLY raw JSON â no markdown, no backticks, no preamble.
 Return exactly:
 {"risk":"LOW"|"MEDIUM"|"HIGH","riskSummary":"One sentence.","summary":"2-4 sentence plain English summary.","redFlags":[{"title":"","description":"","tip":""}],"watchOut":[{"title":"","description":""}],"negotiationTips":[{"title":"","description":""}],"fairTerms":[{"title":"","description":""}]}
 Be specific and practical. Identify at minimum 2-4 items per section.`;
@@ -535,7 +535,7 @@ Be specific and practical. Identify at minimum 2-4 items per section.`;
   }
 
   try{
-    const res=await fetch('/.netlify/functions/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2500,system:sys,messages:msgs})});
+    const res=await fetch('/.netlify/functions/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5-20251001',max_tokens:2500,system:sys,messages:msgs})});
     const data=await res.json();
     clearInterval(iv);$('loading').classList.remove('show');
     if(!res.ok||data.error)throw new Error(data.error?.message||'API error');
@@ -547,16 +547,16 @@ Be specific and practical. Identify at minimum 2-4 items per section.`;
 
     const banner=$('risk-banner');
     banner.className='risk-banner risk-'+result.risk;
-    $('risk-score').textContent=result.risk==='HIGH'?'🔴':result.risk==='MEDIUM'?'🟡':'🟢';
+    $('risk-score').textContent=result.risk==='HIGH'?'ð´':result.risk==='MEDIUM'?'ð¡':'ð¢';
     $('risk-score').className='risk-score score-'+result.risk;
-    $('risk-title').textContent=result.risk==='HIGH'?'High Risk — Review carefully before signing':result.risk==='MEDIUM'?'Moderate Risk — Some terms need attention':'Low Risk — Mostly standard terms';
+    $('risk-title').textContent=result.risk==='HIGH'?'High Risk â Review carefully before signing':result.risk==='MEDIUM'?'Moderate Risk â Some terms need attention':'Low Risk â Mostly standard terms';
     $('risk-summary').textContent=result.riskSummary||'';
 
     $('body-summary').innerHTML=`<p style="font-size:0.9rem;color:#94a3b8;line-height:1.7;padding-bottom:0.5rem">${result.summary}</p>`;
 
     const firstFlag=(result.redFlags||[]).slice(0,1);
     const restFlags=(result.redFlags||[]).slice(1);
-    $('body-red').innerHTML=`<span class="teaser-tag">✓ Free preview</span>${renderItems(firstFlag,'dot-red',true)}${restFlags.length?gateHTML(restFlags.length+' more red flag'+(restFlags.length>1?'s':'')+' found',renderItems(restFlags,'dot-red',true),`Unlock to see every predatory clause with negotiation tips.`):''}`;
+    $('body-red').innerHTML=`<span class="teaser-tag">â Free preview</span>${renderItems(firstFlag,'dot-red',true)}${restFlags.length?gateHTML(restFlags.length+' more red flag'+(restFlags.length>1?'s':'')+' found',renderItems(restFlags,'dot-red',true),`Unlock to see every predatory clause with negotiation tips.`):''}`;
 
     $('body-watch').innerHTML=gateHTML('Watch-out clauses locked',renderItems(result.watchOut,'dot-yellow',false),(result.watchOut||[]).length+' items need your attention.');
     $('body-tips').innerHTML=gateHTML('Negotiation tips locked',renderItems(result.negotiationTips,'dot-green',false),(result.negotiationTips||[]).length+' actionable tips ready for you.');
@@ -577,28 +577,28 @@ Be specific and practical. Identify at minimum 2-4 items per section.`;
   }
 }
 
-function showErr(msg){const el=$('error-box');el.textContent='⚠️ '+msg;el.classList.add('show')}
+function showErr(msg){const el=$('error-box');el.textContent='â ï¸ '+msg;el.classList.add('show')}
 
 function unlockFullReport(){
   if(!analysisResult)return;
   const r=analysisResult;
   isUnlocked=true;
 
-  $('body-red').innerHTML=`<span class="pro-tag">✓ Full access</span>${renderItems(r.redFlags,'dot-red',true)}`;
-  $('body-watch').innerHTML=`<span class="pro-tag">✓ Full access</span>${renderItems(r.watchOut,'dot-yellow',false)}`;
-  $('body-tips').innerHTML=`<span class="pro-tag">✓ Full access</span>${renderItems(r.negotiationTips,'dot-green',false)}`;
-  $('body-fair').innerHTML=`<span class="pro-tag">✓ Full access</span>${renderItems(r.fairTerms,'dot-teal',false)}`;
+  $('body-red').innerHTML=`<span class="pro-tag">â Full access</span>${renderItems(r.redFlags,'dot-red',true)}`;
+  $('body-watch').innerHTML=`<span class="pro-tag">â Full access</span>${renderItems(r.watchOut,'dot-yellow',false)}`;
+  $('body-tips').innerHTML=`<span class="pro-tag">â Full access</span>${renderItems(r.negotiationTips,'dot-green',false)}`;
+  $('body-fair').innerHTML=`<span class="pro-tag">â Full access</span>${renderItems(r.fairTerms,'dot-teal',false)}`;
 
   // Unlock chat
   $('chat-locked-msg').style.display='none';
   $('chat-log').style.display='flex';
   $('chat-input-row').style.display='flex';
-  $('chat-log').innerHTML='<div class="chat-msg msg-ai">Full report unlocked! 🎉 Ask me anything about your contract — specific clauses, your rights, what to negotiate, anything.</div>';
+  $('chat-log').innerHTML='<div class="chat-msg msg-ai">Full report unlocked! ð Ask me anything about your contract â specific clauses, your rights, what to negotiate, anything.</div>';
 
   // Unlock download
   const dlBtn=$('dl-btn');
   dlBtn.className='tool-btn dl-unlocked';
-  dlBtn.textContent='📥 Download Report';
+  dlBtn.textContent='ð¥ Download Report';
   dlBtn.onclick=downloadReport;
   dlBtn.title='';
 }
@@ -611,7 +611,7 @@ function resetAnalyzer(){
   $('contract-text').placeholder='Paste your lease, employment contract, NDA, terms of service, or any legal document here...';
   $('file-chip').classList.remove('show');$('file-input').value='';$('error-box').classList.remove('show');
   $('chat-locked-msg').style.display='block';$('chat-log').style.display='none';$('chat-input-row').style.display='none';
-  $('dl-btn').className='tool-btn locked-btn';$('dl-btn').textContent='🔒 Download Report';$('dl-btn').onclick=null;
+  $('dl-btn').className='tool-btn locked-btn';$('dl-btn').textContent='ð Download Report';$('dl-btn').onclick=null;
 }
 
 async function sendChat(){
@@ -625,7 +625,7 @@ async function sendChat(){
   chatHistory.push({role:'user',content:q});
   const sys=`You are a contract analysis assistant. The user's contract: Risk: ${analysisResult.risk}. Summary: ${analysisResult.summary}. Red Flags: ${JSON.stringify(analysisResult.redFlags)}. Tips: ${JSON.stringify(analysisResult.negotiationTips)}. Answer helpfully in 2-4 sentences. Remind the user you are not a lawyer when relevant.`;
   try{
-    const res=await fetch('/.netlify/functions/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:sys,messages:chatHistory})});
+    const res=await fetch('/.netlify/functions/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5-20251001',max_tokens:400,system:sys,messages:chatHistory})});
     const data=await res.json();const reply=data.content.map(c=>c.text||'').join('');
     thinking.textContent=reply;chatHistory.push({role:'assistant',content:reply});
   }catch(e){thinking.textContent='Sorry, something went wrong. Please try again.'}
@@ -635,9 +635,9 @@ async function sendChat(){
 function downloadReport(){
   if(!analysisResult||!isUnlocked)return;
   const r=analysisResult;const dt=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
-  function sec(title,items,showTip){if(!items||!items.length)return`<h3>${title}</h3><p style="color:#666;font-style:italic">None identified.</p>`;return`<h3>${title}</h3>${items.map(i=>`<div style="border-left:3px solid #4f46e5;padding:8px 14px;margin:10px 0;background:#f8f7ff;border-radius:0 6px 6px 0"><strong>${i.title}</strong><br/><span style="color:#444;font-size:14px">${i.description}</span>${showTip&&i.tip?`<div style="margin-top:8px;background:#e8f5e9;padding:7px 11px;border-radius:5px;font-size:13px;color:#2e7d32"><strong>💡 Tip:</strong> ${i.tip}</div>`:''}</div>`).join('')}`}
+  function sec(title,items,showTip){if(!items||!items.length)return`<h3>${title}</h3><p style="color:#666;font-style:italic">None identified.</p>`;return`<h3>${title}</h3>${items.map(i=>`<div style="border-left:3px solid #4f46e5;padding:8px 14px;margin:10px 0;background:#f8f7ff;border-radius:0 6px 6px 0"><strong>${i.title}</strong><br/><span style="color:#444;font-size:14px">${i.description}</span>${showTip&&i.tip?`<div style="margin-top:8px;background:#e8f5e9;padding:7px 11px;border-radius:5px;font-size:13px;color:#2e7d32"><strong>ð¡ Tip:</strong> ${i.tip}</div>`:''}</div>`).join('')}`}
   const rC=r.risk==='HIGH'?'#dc2626':r.risk==='MEDIUM'?'#d97706':'#16a34a';
-  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Contract Analysis Report</title><style>body{font-family:Georgia,serif;max-width:760px;margin:0 auto;padding:40px 30px;color:#1a1a1a;line-height:1.7}h1{font-size:26px;margin-bottom:4px}h2{font-size:20px;margin:28px 0 10px;border-bottom:2px solid #e5e7eb;padding-bottom:6px}h3{font-size:16px;margin:18px 0 8px;color:#3730a3}.chip{display:inline-block;padding:5px 16px;border-radius:50px;font-weight:700;font-size:13px;color:#fff;background:${rC};margin:8px 0}.meta{color:#6b7280;font-size:13px;margin-bottom:24px}.notice{background:#fffbeb;border:1px solid #fde68a;padding:12px 16px;border-radius:8px;font-size:13px;color:#92400e;margin-top:30px}</style></head><body><h1>📄 Contract Analysis Report</h1><div class="meta">Generated by ContractDecoder · ${dt}</div><div class="chip">${r.risk} RISK</div><p style="color:#555">${r.riskSummary}</p><h2>Plain English Summary</h2><p>${r.summary}</p>${sec('🚩 Red Flags',r.redFlags,true)}${sec('⚠️ Watch Out For',r.watchOut,false)}${sec('💬 Negotiation Tips',r.negotiationTips,false)}${sec('✅ Fair Terms',r.fairTerms,false)}<div class="notice">⚖️ <strong>Not Legal Advice.</strong> This report is AI-generated for informational purposes only. Consult a licensed attorney for contracts of significance.</div></body></html>`;
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Contract Analysis Report</title><style>body{font-family:Georgia,serif;max-width:760px;margin:0 auto;padding:40px 30px;color:#1a1a1a;line-height:1.7}h1{font-size:26px;margin-bottom:4px}h2{font-size:20px;margin:28px 0 10px;border-bottom:2px solid #e5e7eb;padding-bottom:6px}h3{font-size:16px;margin:18px 0 8px;color:#3730a3}.chip{display:inline-block;padding:5px 16px;border-radius:50px;font-weight:700;font-size:13px;color:#fff;background:${rC};margin:8px 0}.meta{color:#6b7280;font-size:13px;margin-bottom:24px}.notice{background:#fffbeb;border:1px solid #fde68a;padding:12px 16px;border-radius:8px;font-size:13px;color:#92400e;margin-top:30px}</style></head><body><h1>ð Contract Analysis Report</h1><div class="meta">Generated by ContractDecoder Â· ${dt}</div><div class="chip">${r.risk} RISK</div><p style="color:#555">${r.riskSummary}</p><h2>Plain English Summary</h2><p>${r.summary}</p>${sec('ð© Red Flags',r.redFlags,true)}${sec('â ï¸ Watch Out For',r.watchOut,false)}${sec('ð¬ Negotiation Tips',r.negotiationTips,false)}${sec('â Fair Terms',r.fairTerms,false)}<div class="notice">âï¸ <strong>Not Legal Advice.</strong> This report is AI-generated for informational purposes only. Consult a licensed attorney for contracts of significance.</div></body></html>`;
   const blob=new Blob([html],{type:'text/html'});const url=URL.createObjectURL(blob);
   const a=document.createElement('a');a.href=url;a.download='ContractDecoder-Report.html';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
 }
