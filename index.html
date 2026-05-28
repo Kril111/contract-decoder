@@ -535,7 +535,7 @@ Be specific and practical. Identify at minimum 2-4 items per section.`;
   }
 
   try{
-    const res=await fetch('/.netlify/functions/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5-20251001',max_tokens:2500,system:sys,messages:msgs})});
+    const res=await fetch('/.netlify/functions/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2500,system:sys,messages:msgs})});
     const data=await res.json();
     clearInterval(iv);$('loading').classList.remove('show');
     if(!res.ok||data.error)throw new Error(data.error?.message||'API error');
@@ -625,7 +625,7 @@ async function sendChat(){
   chatHistory.push({role:'user',content:q});
   const sys=`You are a contract analysis assistant. The user's contract: Risk: ${analysisResult.risk}. Summary: ${analysisResult.summary}. Red Flags: ${JSON.stringify(analysisResult.redFlags)}. Tips: ${JSON.stringify(analysisResult.negotiationTips)}. Answer helpfully in 2-4 sentences. Remind the user you are not a lawyer when relevant.`;
   try{
-    const res=await fetch('/.netlify/functions/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5-20251001',max_tokens:400,system:sys,messages:chatHistory})});
+    const res=await fetch('/.netlify/functions/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:400,system:sys,messages:chatHistory})});
     const data=await res.json();const reply=data.content.map(c=>c.text||'').join('');
     thinking.textContent=reply;chatHistory.push({role:'assistant',content:reply});
   }catch(e){thinking.textContent='Sorry, something went wrong. Please try again.'}
