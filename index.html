@@ -535,6 +535,7 @@ Be specific and practical. Identify at minimum 2-4 items per section.`;
   }
 
   try{const res=await fetch('/.netlify/functions/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2500,system:sys,messages:msgs})});const data=await res.json();clearInterval(iv);$('loading').classList.remove('show');if(!res.ok||data.error)throw new Error(data.error?.message||'API error');const rawText=data.content.filter(c=>c.type==='text').map(c=>c.text||'').join('');const jsonMatch=rawText.match(/\{[\s\S]*\}/);if(!jsonMatch)throw new Error('No JSON in response');const result=JSON.parse(jsonMatch[0]);analysisResult=result;
+    sessionStorage.setItem('cd_result',JSON.stringify(result));
     freeUses=Math.max(0,freeUses-1);
     updateUsagePill();
     chatHistory=[];
@@ -635,6 +636,31 @@ function downloadReport(){
   const blob=new Blob([html],{type:'text/html'});const url=URL.createObjectURL(blob);
   const a=document.createElement('a');a.href=url;a.download='ContractDecoder-Report.html';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
 }
+
+function renderResults(r){
+  const banner=$('risk-banner');
+  banner.className='risk-banner risk-'+r.risk;
+  $('risk-score').textContent=r.risk==='HIGH'?'🔴':r.risk==='MEDIUM'?'🟡':'🟢';
+  $('risk-score').className='risk-score score-'+r.risk;
+  $('risk-title').textContent=r.risk==='HIGH'?'High Risk — Review carefully before signing':r.risk==='MEDIUM'?'Moderate Risk — Some terms need attention':'Low Risk — Mostly standard terms';
+  $('risk-summary').textContent=r.riskSummary||'';
+  $('body-summary').innerHTML='<p style="font-size:0.9rem;color:#94a3b8;line-height:1.7;padding-bottom:0.5rem">'+r.summary+'</p>';
+  const firstFlag=(r.redFlags||[]).slice(0,1);const restFlags=(r.redFlags||[]).slice(1);
+  $('body-red').innerHTML='<span class="teaser-tag">✓ Free preview</span>'+renderItems(firstFlag,'dot-red',true)+(restFlags.length?gateHTML(restFlags.length+' more red flags found',renderItems(restFlags,'dot-red',true),'Unlock to see every predatory clause.'):'');
+  $('body-watch').innerHTML=gateHTML('Watch-out clauses locked',renderItems(r.watchOut,'dot-yellow',false),(r.watchOut||[]).length+' items need your attention.');
+  $('body-tips').innerHTML=gateHTML('Negotiation tips locked',renderItems(r.negotiationTips,'dot-green',false),(r.negotiationTips||[]).length+' actionable tips ready for you.');
+  $('body-fair').innerHTML=gateHTML('Fair terms analysis locked',renderItems(r.fairTerms,'dot-teal',false),'See which terms are standard and safe to keep.');
+  $('cnt-red').textContent=(r.redFlags||[]).length;$('cnt-watch').textContent=(r.watchOut||[]).length;
+  $('cnt-tips').textContent=(r.negotiationTips||[]).length;$('cnt-fair').textContent=(r.fairTerms||[]).length;
+  $('results').classList.add('show');
+}
+(function(){
+  if(window.location.search.indexOf('paid=true')>-1){
+    const s=sessionStorage.getItem('cd_result');
+    if(s){try{analysisResult=JSON.parse(s);sessionStorage.removeItem('cd_result');show('analyzer');$('upload-section').style.display='none';renderResults(analysisResult);unlockFullReport();}catch(e){}}
+    window.history.replaceState({},'',window.location.pathname);
+  }
+})();
 
 updateUsagePill();
 </script>
